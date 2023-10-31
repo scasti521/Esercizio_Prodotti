@@ -1,7 +1,12 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public class CatalogoProdotti{
+
+    static final Scanner sc=new Scanner(System.in);
+    static final Scanner s=new Scanner(System.in);
+
     public static void main(String[] args) {
         Scanner sc=new Scanner(System.in);
 
@@ -42,7 +47,9 @@ public class CatalogoProdotti{
                 if (tipo.equalsIgnoreCase("u")) {
                     u.registrati(username, password, true);
                 }else{
-                    u.registrati(username, password, false);
+                     if (tipo.equalsIgnoreCase("a")) {
+                        u.registrati(username, password, false);
+                    }
                 }
             }
         }
@@ -52,6 +59,22 @@ public class CatalogoProdotti{
         if (conta<3) {
 
             if (u.utente==true) {
+                menu_utente(catalogo);
+            }else{
+                //Operazioni sui prodotti da parte dell'amministratore
+            menu_amministratore(catalogo);
+            }
+           
+        }else{
+            System.out.println("Utente non presente");
+        }
+
+        
+
+
+    }
+
+    public static void menu_utente(ArrayList<Prodotto> catalogo){
             System.out.println("------------------------------MENU'--------------------------------");
             System.out.println("Premi 1 per visualizzare i prodotti: ");
             System.out.println("Premi 2 per uscire");
@@ -63,7 +86,7 @@ public class CatalogoProdotti{
                     // Utilizzo del ciclo for tradizionale per visualizzare gli elementi
                     System.out.println("-------------------------------------------------------------------------");
                     for (int i = 0; i < catalogo.size(); i++) {
-                        System.out.println("-----------PRODOTTO------------------------");
+                         System.out.println("-----------PRODOTTO------------------------");
                         System.out.println(catalogo.get(i).nome);
                         System.out.println(catalogo.get(i).descrizione);
                         System.out.println(catalogo.get(i).getPrezzo());
@@ -74,20 +97,72 @@ public class CatalogoProdotti{
                 //Chiusura del programma
                 case 2:
                     break;
-            
+                
                 default:
                     break;
             }
-        }else{
-            //Operazioni sui prodotti da parte dell'amministratore
-        }
-           
-        }else{
-            System.out.println("Utente non presente");
-        }
+    }
 
-        
+    public static void menu_amministratore(ArrayList<Prodotto> catalogo){
+        System.out.println("-----------------------------------MENU' AMMINISTRATORE-------------------------------------");
+         System.out.println("Inserisci cosa vuoi fare:");
+            System.out.println("Premi 1 per aggiungere un prodotto");
+            System.out.println("Primi 2 per eliminare3 un prodotto");
+            System.out.println("Primi 3 per visualizzare i prodotti");
+            int operazione=s.nextInt();
+
+            switch (operazione) {
+                case 1:
+                    System.out.println("Inserisci il nome del prodotto: ");
+                    String nome=s.nextLine();
+                    System.out.println("Inserisci il prezzo del prodotto:");
+                    double prezzo=s.nextDouble();
+                    System.out.println("Inserisci la descrizxione del prodotto: ");
+                    String descrizione=s.nextLine();
+                    System.out.println("Inserisci la quantità del prodotto: ");
+                    int quantità=s.nextInt();
+                    catalogo.add(new Prodotto(nome,prezzo,descrizione,quantità));
+                    System.out.println("------PRPDOTTO AGGIUNTO CORRETTAMENTE------");
+                    break;
+                
+                case 2:
+                    System.out.println("Inserisci il nome del prodotto da rimuovere: ");
+                    String nome_p_r=sc.nextLine();
+                    for (int i = 0; i < catalogo.size(); i++) {
+                        Prodotto prodotto = catalogo.get(i);
+                        if (prodotto.nome.equals(nome_p_r)) {
+                            catalogo.remove(prodotto);
+                            break; // Esci dal ciclo dopo la rimozione
+                        }
+                    }
+                    System.out.println("-----PRODOTTO ELIMINATO------");
+
+                    System.out.println("-------------------------------------------------------------------------");
+                    for (int i = 0; i < catalogo.size(); i++) {
+                        System.out.println("-----------PRODOTTO------------------------");
+                        System.out.println(catalogo.get(i).nome);
+                        System.out.println(catalogo.get(i).descrizione);
+                        System.out.println(catalogo.get(i).getPrezzo());
+                        System.out.println(catalogo.get(i).getQuantità());
+                    }
 
 
+                    break;
+
+                case 3:
+                    System.out.println("-------------------------------------------------------------------------");
+                    for (int i = 0; i < catalogo.size(); i++) {
+                        System.out.println("-----------PRODOTTO------------------------");
+                        System.out.println(catalogo.get(i).nome);
+                        System.out.println(catalogo.get(i).descrizione);
+                        System.out.println(catalogo.get(i).getPrezzo());
+                        System.out.println(catalogo.get(i).getQuantità());
+                    }
+                    break;
+
+
+                default:
+                    break;
+            }
     }
 }
